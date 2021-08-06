@@ -2,11 +2,11 @@ const cityform=document.querySelector("form");
 // for card class
 const card=document.querySelector(".card");
 const details=document.querySelector(".details");
-
 // FOR image and icon
-
 const time=document.querySelector("img.time");
 const icon=document.querySelector(".icon img");
+//function object
+const for1=new Forcast();
 
 
 const updateUI=(data)=>{
@@ -48,28 +48,16 @@ const updateUI=(data)=>{
 };
 
 
-const updatecity=async(city)=>{
-
-    const city1=await getcity(city);
-    const weather = await getweather(city1.Key);
- //returning object
-
-    return{city1,weather};
-
-};
-
-
-
 cityform.addEventListener("submit",(e)=>{
     //prevent default action
     e.preventDefault();
 
     //get city value
     const city=cityform.city.value.trim();
-    cityform.reset();
+    cityform.reset(); 
 
     //update the ui with new city
-    updatecity(city).then(data=>updateUI(data))
+    for1.updatecity(city).then(data=>updateUI(data))
     .catch(error=>console.log(error));
 
  localStorage.setItem('city',city);
@@ -77,7 +65,7 @@ cityform.addEventListener("submit",(e)=>{
 });
 
 if(localStorage.getItem('city')){
-    updatecity(localStorage.getItem('city'))
+    for1.updatecity(localStorage.getItem('city'))
     .then(data=>updateUI(data))
     .catch(error=>console.log(error))
 }

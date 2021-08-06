@@ -1,34 +1,27 @@
-const key="wZ9QYcAGjAo27UtRAgtsrGn8fLLP9i1s";
 
-//get weather information
-const getweather= async(id)=>{
-
-    const base="http://dataservice.accuweather.com/currentconditions/v1/";
-    const query=`${id}?apikey=${key}`;
-
-    const response=await fetch(base+query);
+class Forcast{
+    constructor(){
+        this.key="wZ9QYcAGjAo27UtRAgtsrGn8fLLP9i1s";
+        this.WeatherUI="http://dataservice.accuweather.com/currentconditions/v1/";
+        this.CityUI="http://dataservice.accuweather.com/locations/v1/cities/search";
+    }
+    async updatecity(city){
+        const city1=await this.getcity(city);
+        const weather = await  this.getweather(city1.Key);
+        //returning object
+        return{city1,weather};
+    };
+    async getcity(city){
+    const query=`?apikey=${ this.key }&q=${ city }`;
+    const response=await fetch(this.CityUI  +query);
+    const data=await response.json();
+    return data[0];
+    };
+    async getweather(id){
+    const query=`${id}?apikey=${this. key}`;
+    const response=await fetch(this.WeatherUI +query);
     const data=await response.json();
 
     return data[0];
-};
-
-
-
-//get city information
-const getcity=async(city)=>{
-
-    const base="http://dataservice.accuweather.com/locations/v1/cities/search";
-    const query=`?apikey=${ key }&q=${ city }`;
-
-    const response=await fetch(base+query);
-    const data=await response.json();
-
-     return data[0];
-};
-
-getcity("etawah").then(data=>{
-    return getweather(data.Key);
-}).then(data=>{console.log(data)})
-.catch(error=>console.log(error));
-
-
+    };
+}
